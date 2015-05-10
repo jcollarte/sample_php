@@ -6,6 +6,15 @@ php:
   - 5.5
   - 5.6
   
+env:
+  global:
+    - OPENSHIFT_REPO=ssh://554d1d305973ca23d7000151@php-pruebasitio.rhcloud.com/~/git/php.git/
+
+before_install:
+  - git remote -v | grep ^openshift || git remote add openshift $OPENSHIFT_REPO
+  
+after_success:
+  - git push -f openshift $BRANCH:master
 before_script: 
   - mkdir -p shippable/codecoverage
   - mkdir -p shippable/testresults
